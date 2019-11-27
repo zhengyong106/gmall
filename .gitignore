@@ -6,14 +6,3 @@
 .idea
 *.iml
 .gitignore
-
-gmall-api/target/
-gmall-common-util/src/
-gmall-common-util/target/
-gmall-service-util/src/
-gmall-service-util/target/
-gmall-user-service/target/
-gmall-user-web/src/test/
-gmall-user-web/target/
-gmall-web-util/src/
-gmall-web-util/target/
