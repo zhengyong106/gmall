@@ -17,12 +17,14 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../gmall-common-util</module>
-        <module>../gmall-web-util</module>
         <module>../gmall-api</module>
+        <module>../gmall-common-util</module>
+        <module>../gmall-manage-service</module>
+        <module>../gmall-manage-web</module>
         <module>../gmall-service-util</module>
         <module>../gmall-user-service</module>
         <module>../gmall-user-web</module>
+        <module>../gmall-web-util</module>
     </modules>
 
     <dependencyManagement>
