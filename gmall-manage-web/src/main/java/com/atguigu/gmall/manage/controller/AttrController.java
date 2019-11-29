@@ -1,12 +1,13 @@
 package com.atguigu.gmall.manage.controller;
 
 import com.atguigu.gmall.api.bean.PmsBaseAttrInfo;
-import com.atguigu.gmall.api.service.PmsBaseAttrService;
+import com.atguigu.gmall.api.bean.PmsBaseAttrValue;
+import com.atguigu.gmall.api.bean.PmsBaseSaleAttr;
+import com.atguigu.gmall.api.service.PmsBaseService;
 import org.apache.dubbo.config.annotation.Reference;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,10 +17,25 @@ import java.util.List;
 @RestController
 public class AttrController {
     @Reference
-    PmsBaseAttrService attrService;
+    PmsBaseService baseService;
 
     @RequestMapping("attrInfoList")
-    public List<PmsBaseAttrInfo> attrInfoList(String catalog3Id){
-        return attrService.getAttrInfo(catalog3Id);
+    public List<PmsBaseAttrInfo> attrInfoList(@RequestParam String catalog3Id){
+        return baseService.getAttrInfoList(catalog3Id);
+    }
+
+    @RequestMapping("getAttrValueList")
+    public List<PmsBaseAttrValue> attrValueList(@RequestParam String attrId){
+        return baseService.getAttrValueList(attrId);
+    }
+
+    @RequestMapping("saveAttrInfo")
+    public String saveAttrInfo(@RequestBody PmsBaseAttrInfo pmsBaseAttrInfo, HttpServletRequest request){
+        return baseService.saveAttrInfo(pmsBaseAttrInfo) != 0 ? "SUCCESS": "FIELD";
+    }
+
+    @RequestMapping("baseSaleAttrList")
+    public List<PmsBaseSaleAttr> baseSaleAttrList(){
+        return baseService.getSaleAttrList();
     }
 }

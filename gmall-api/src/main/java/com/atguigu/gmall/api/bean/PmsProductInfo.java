@@ -14,7 +14,7 @@ public class PmsProductInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id; // spu id
-    private String productName; // spu名称
+    private String spuName; // spu名称
     private String description; // spu描述
     private  String catalog3Id; // 三级目录id
     @Transient

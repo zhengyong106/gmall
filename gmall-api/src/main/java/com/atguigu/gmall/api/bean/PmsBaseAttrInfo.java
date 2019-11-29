@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 台属性
@@ -17,4 +18,6 @@ public class PmsBaseAttrInfo implements Serializable {
     private String attrName; // 平台属性名称
     private String catalog3Id; // 三级目录id
     private String isEnabled; // 平台属性是否可用
+    @Transient
+    List<PmsBaseAttrValue> attrValueList; // 平台属性值列表
 }
