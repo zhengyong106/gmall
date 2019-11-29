@@ -8,6 +8,9 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 用户
+ */
 @Data
 public class UmsMember implements Serializable {
 

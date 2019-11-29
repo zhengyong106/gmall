@@ -7,6 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
+/**
+ * 用户收货地址
+ */
 @Data
 public class UmsMemberReceiveAddress implements Serializable {
 

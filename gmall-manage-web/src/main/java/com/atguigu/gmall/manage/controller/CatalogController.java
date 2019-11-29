@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * 商品类目管理
+ */
 @CrossOrigin
 @RestController
 public class CatalogController {
