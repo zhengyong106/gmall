@@ -30,8 +30,6 @@
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>
             <version>1.27-SNAPSHOT</version>
-            <scope>system</scope> <!--system，类似provided，需要显式提供依赖的jar以后，Maven就不会在Repository中查找它-->
-            <systemPath>${basedir}/lib/fastdfs-client-java-1.27-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

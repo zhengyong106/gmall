@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class FDFSFileUploadUtil {
@@ -56,4 +58,42 @@ public class FDFSFileUploadUtil {
         }
         return null;
     }
+
+    public static String upload(File file) {
+        String[] uploadResults = null;
+        StorageClient storageClient=null;
+
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+            byte[] fileData = new byte[inputStream.available()];
+            inputStream.read(fileData);
+
+            storageClient = getStorageClient();
+            String fileName = file.getAbsolutePath();
+            String fileExtName = fileName.substring(fileName.lastIndexOf(".") + 1);
+            uploadResults = storageClient.upload_file(fileData, fileExtName, null);
+        } catch (Exception e) {
+            logger.error("Exception when uploading the file:" + file.getName(), e);
+        } finally {
+            if (null != inputStream) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        if (null != uploadResults) {
+            return HTTP_SERVICE_URL + "/" + uploadResults[0]+ "/" + uploadResults[1];
+        } else if (null != storageClient) {
+            logger.error("upload file fail, error code:" + storageClient.getErrorCode());
+            return null;
+        } else {
+            logger.error("upload file fail, error code:" + storageClient.getErrorCode());
+        }
+        return null;
+    }
+
 }

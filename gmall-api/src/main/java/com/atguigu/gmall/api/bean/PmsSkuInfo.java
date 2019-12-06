@@ -18,10 +18,10 @@ public class PmsSkuInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id; // 商品库存单元（sku）id
-    String productId; // 标准商品单元（spu）id
+    String spuId; // 标准商品单元（spu）id
     BigDecimal price; // sku价格
     String skuName; // sku名称
-    BigDecimal weight; // sku重量
+    String weight; // sku重量
     String skuDesc; // sku描述信息
     String catalog3Id; // 三级分类id
     String skuDefaultImg; // sku默认图片

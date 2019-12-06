@@ -14,5 +14,6 @@ public class PmsBaseAttrValue implements Serializable {
     private String id; // 平台属性值id
     private String valueName; // 平台属性值名称
     private String attrId; // 平台属性id
+    private String catalog3Id; // 三级目录id
     private String isEnabled; // 平台属性值是否启用
 }

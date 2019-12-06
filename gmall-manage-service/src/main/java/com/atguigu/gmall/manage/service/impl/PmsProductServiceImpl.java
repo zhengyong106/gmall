@@ -12,8 +12,7 @@ import com.atguigu.gmall.manage.mapper.PmsProductSaleAttrValueMapper;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PmsProductServiceImpl implements PmsProductService {
@@ -36,9 +35,33 @@ public class PmsProductServiceImpl implements PmsProductService {
     }
 
     public List<PmsProductSaleAttr> getSpuSaleAttrList(String spuId) {
+        // 查询销售属性列表
         PmsProductSaleAttr record = new PmsProductSaleAttr();
         record.setProductId(spuId);
-        return productSaleAttrMapper.select(record);
+        List<PmsProductSaleAttr> saleAttrList = productSaleAttrMapper.select(record);
+
+        // 查询销售属性值列表
+        PmsProductSaleAttrValue record2 = new PmsProductSaleAttrValue();
+        record2.setProductId(spuId);
+        List<PmsProductSaleAttrValue> saleAttrValueList = productSaleAttrValueMapper.select(record2);
+
+        // 生成字典映射销售属性和销售属性值
+        Map<String, List<PmsProductSaleAttrValue>> relationMap = new HashMap<>();
+        for(PmsProductSaleAttrValue saleAttrValue: saleAttrValueList){
+            String saleAttrId = saleAttrValue.getSaleAttrId();
+            if (null != relationMap.get(saleAttrId)){
+                relationMap.get(saleAttrId).add(saleAttrValue);
+            } else {
+                relationMap.put(saleAttrId, new ArrayList<>(Collections.singletonList(saleAttrValue)));
+            }
+        }
+
+        // 通过字典关联查询
+        for(PmsProductSaleAttr saleAttr: saleAttrList){
+            String saleAttrId = saleAttr.getSaleAttrId();
+            saleAttr.setSpuSaleAttrValueList(relationMap.get(saleAttrId));
+        }
+        return saleAttrList;
     }
 
     public List<PmsProductImage> getSpuImageList(String spuId) {

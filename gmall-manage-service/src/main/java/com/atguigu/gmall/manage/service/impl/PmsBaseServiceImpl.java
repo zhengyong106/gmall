@@ -10,7 +10,7 @@ import com.atguigu.gmall.manage.mapper.PmsBaseSaleAttrMapper;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PmsBaseServiceImpl implements PmsBaseService {
@@ -24,9 +24,33 @@ public class PmsBaseServiceImpl implements PmsBaseService {
     PmsBaseSaleAttrMapper saleAttrMapper;
 
     public List<PmsBaseAttrInfo> getAttrInfoList(String catalog3Id) {
-        PmsBaseAttrInfo attrInfo = new PmsBaseAttrInfo();
-        attrInfo.setCatalog3Id(catalog3Id);
-        return attrInfoMapper.select(attrInfo);
+        // 查询平台属性列表
+        PmsBaseAttrInfo record = new PmsBaseAttrInfo();
+        record.setCatalog3Id(catalog3Id);
+        List<PmsBaseAttrInfo> attrInfoList = attrInfoMapper.select(record);
+
+        // 关联查询平台属性值列表
+        PmsBaseAttrValue record2 = new PmsBaseAttrValue();
+        record2.setCatalog3Id(catalog3Id);
+        List<PmsBaseAttrValue> attrValueList = (attrValueMapper.select(record2));
+
+        // 生成字典映射平台属性和平台属性值
+        Map<String, List<PmsBaseAttrValue>> relationMap = new HashMap<>();
+        for(PmsBaseAttrValue attrValue: attrValueList){
+            String attrInfoId = attrValue.getAttrId();
+            if (null != relationMap.get(attrInfoId)){
+                relationMap.get(attrInfoId).add(attrValue);
+            } else {
+                relationMap.put(attrInfoId, new ArrayList<>(Collections.singletonList(attrValue)));
+            }
+        }
+
+        // 通过字典关联查询
+        for(PmsBaseAttrInfo attrInfo: attrInfoList){
+            String attrInfoId = attrInfo.getId();
+            attrInfo.setAttrValueList(relationMap.get(attrInfoId));
+        }
+        return attrInfoList;
     }
 
     public List<PmsBaseSaleAttr> getSaleAttrList() {
