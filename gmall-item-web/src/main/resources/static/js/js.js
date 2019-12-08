@@ -56,10 +56,10 @@ $(function(){
 
 
 
-	
 
 
-	
+
+
 
 		$(".box-attr dd").click(function() {
 			$(this).css({
@@ -94,25 +94,25 @@ $(function(){
 		})
 
 		//左右滚动
-		$("#left").click(function() {
+		$("#right").click(function() {
 			$(".box-lh-one ul").stop().animate({
 				"left": "-297px"
 			})
 			$(this).css({
 				"color": "#000"
 			})
-			$("#right").css({
+			$("#left").css({
 				"color": "#ccc"
 			})
 		})
-		$("#right").click(function() {
+		$("#left").click(function() {
 			$(".box-lh-one ul").stop().animate({
 				"left": 0
 			})
 			$(this).css({
 				"color": "#000"
 			})
-			$("#left").css({
+			$("#right").css({
 				"color": "#ccc"
 			})
 		})
@@ -266,7 +266,7 @@ $(".zjxs").mouseover(function () {
 	$(".header_wdjd").css("display","block");
 }).mouseout(function(){
 	$(".header_wdjd").css("display","none");
-	
+
 })
 
 //手机京东显示隐藏

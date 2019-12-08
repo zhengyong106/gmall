@@ -20,7 +20,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     }
 
     @Override
-    public int addMember(UmsMember member) {
+    public int saveMember(UmsMember member) {
         member.setId(null);
         member.setCreateTime(new Date());
         return umsMemberMapper.insert(member);

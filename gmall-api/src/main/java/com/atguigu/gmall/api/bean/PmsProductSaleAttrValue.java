@@ -3,6 +3,7 @@ package com.atguigu.gmall.api.bean;
 import lombok.Data;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -15,4 +16,6 @@ public class PmsProductSaleAttrValue implements Serializable {
     String productId; // spu id
     String saleAttrId; // 基本销售属性id
     String saleAttrValueName; // spu销售属性值名称
+    @Transient
+    String checked; // 当前销售属性值是否被选中
 }

@@ -6,10 +6,12 @@ import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
 
 import java.util.List;
 
-public interface PmsProductService {
+public interface PmsSpuService {
     List<PmsProductInfo> getSpuList(String catalog3Id);
 
-    List<PmsProductSaleAttr> getSpuSaleAttrList(String spuId);
+    List<PmsProductSaleAttr> getSpuSaleAttrListBySpuId(String spuId);
+
+    List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuId(String spuId, String skuId);
 
     List<PmsProductImage> getSpuImageList(String spuId);
 

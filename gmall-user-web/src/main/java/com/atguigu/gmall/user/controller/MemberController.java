@@ -30,6 +30,6 @@ public class MemberController {
         if (StringUtils.isEmpty(member.getUsername()) || StringUtils.isEmpty(member.getPassword())) {
 
         }
-        umsMemberService.addMember(member);
+        umsMemberService.saveMember(member);
     }
 }

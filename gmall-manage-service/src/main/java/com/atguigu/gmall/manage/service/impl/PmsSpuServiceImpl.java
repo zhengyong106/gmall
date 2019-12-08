@@ -4,7 +4,7 @@ import com.atguigu.gmall.api.bean.PmsProductImage;
 import com.atguigu.gmall.api.bean.PmsProductInfo;
 import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
 import com.atguigu.gmall.api.bean.PmsProductSaleAttrValue;
-import com.atguigu.gmall.api.service.PmsProductService;
+import com.atguigu.gmall.api.service.PmsSpuService;
 import com.atguigu.gmall.manage.mapper.PmsProductImageMapper;
 import com.atguigu.gmall.manage.mapper.PmsProductInfoMapper;
 import com.atguigu.gmall.manage.mapper.PmsProductSaleAttrMapper;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 @Service
-public class PmsProductServiceImpl implements PmsProductService {
+public class PmsSpuServiceImpl implements PmsSpuService {
     @Autowired
     PmsProductInfoMapper productInfoMapper;
 
@@ -28,13 +28,15 @@ public class PmsProductServiceImpl implements PmsProductService {
     @Autowired
     PmsProductSaleAttrValueMapper productSaleAttrValueMapper;
 
+    @Override
     public List<PmsProductInfo> getSpuList(String catalog3Id) {
         PmsProductInfo record = new PmsProductInfo();
         record.setCatalog3Id(catalog3Id);
         return productInfoMapper.select(record);
     }
 
-    public List<PmsProductSaleAttr> getSpuSaleAttrList(String spuId) {
+    @Override
+    public List<PmsProductSaleAttr> getSpuSaleAttrListBySpuId(String spuId) {
         // 查询销售属性列表
         PmsProductSaleAttr record = new PmsProductSaleAttr();
         record.setProductId(spuId);
@@ -64,12 +66,19 @@ public class PmsProductServiceImpl implements PmsProductService {
         return saleAttrList;
     }
 
+    @Override
+    public List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuId(String spuId, String skuId) {
+        return productSaleAttrMapper.selectCheckedBySpuIdAndSkuId(spuId, skuId);
+    }
+
+    @Override
     public List<PmsProductImage> getSpuImageList(String spuId) {
         PmsProductImage record = new PmsProductImage();
         record.setProductId(spuId);
         return productImageMapper.select(record);
     }
 
+    @Override
     public int saveSpuInfo(PmsProductInfo pmsProductInfo) {
         pmsProductInfo.setId(null);
         int inserted = productInfoMapper.insert(pmsProductInfo);

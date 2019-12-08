@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class PmsSkuSaleAttrValue implements Serializable {
     @Id
     String id; // sku销售属性值id
+    String spuId; // spu id
     String skuId; // sku id
     String saleAttrId; // 销售属性id
     String saleAttrValueId; // 销售属性值id

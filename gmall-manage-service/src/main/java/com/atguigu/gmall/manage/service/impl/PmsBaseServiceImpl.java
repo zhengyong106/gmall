@@ -1,12 +1,8 @@
 package com.atguigu.gmall.manage.service.impl;
 
-import com.atguigu.gmall.api.bean.PmsBaseAttrInfo;
-import com.atguigu.gmall.api.bean.PmsBaseAttrValue;
-import com.atguigu.gmall.api.bean.PmsBaseSaleAttr;
+import com.atguigu.gmall.api.bean.*;
 import com.atguigu.gmall.api.service.PmsBaseService;
-import com.atguigu.gmall.manage.mapper.PmsBaseAttrInfoMapper;
-import com.atguigu.gmall.manage.mapper.PmsBaseAttrValueMapper;
-import com.atguigu.gmall.manage.mapper.PmsBaseSaleAttrMapper;
+import com.atguigu.gmall.manage.mapper.*;
 import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,6 +10,15 @@ import java.util.*;
 
 @Service
 public class PmsBaseServiceImpl implements PmsBaseService {
+    @Autowired
+    PmsBaseCatalog1Mapper catalog1Mapper;
+
+    @Autowired
+    PmsBaseCatalog2Mapper catalog2Mapper;
+
+    @Autowired
+    PmsBaseCatalog3Mapper catalog3Mapper;
+
     @Autowired
     PmsBaseAttrInfoMapper attrInfoMapper;
 
@@ -23,6 +28,26 @@ public class PmsBaseServiceImpl implements PmsBaseService {
     @Autowired
     PmsBaseSaleAttrMapper saleAttrMapper;
 
+    @Override
+    public List<PmsBaseCatalog1> getCatalog1() {
+        return catalog1Mapper.selectAll();
+    }
+
+    @Override
+    public List<PmsBaseCatalog2> getCatalog2(String catalog1Id) {
+        PmsBaseCatalog2 record = new PmsBaseCatalog2();
+        record.setCatalog1Id(catalog1Id);
+        return catalog2Mapper.select(record);
+    }
+
+    @Override
+    public List<PmsBaseCatalog3> getCatalog3(String catalog2Id) {
+        PmsBaseCatalog3 record = new PmsBaseCatalog3();
+        record.setCatalog2Id(catalog2Id);
+        return catalog3Mapper.select(record);
+    }
+
+    @Override
     public List<PmsBaseAttrInfo> getAttrInfoList(String catalog3Id) {
         // 查询平台属性列表
         PmsBaseAttrInfo record = new PmsBaseAttrInfo();
@@ -53,16 +78,19 @@ public class PmsBaseServiceImpl implements PmsBaseService {
         return attrInfoList;
     }
 
-    public List<PmsBaseSaleAttr> getSaleAttrList() {
-        return saleAttrMapper.selectAll();
-    }
-
+    @Override
     public List<PmsBaseAttrValue> getAttrValueList(String attrId) {
         PmsBaseAttrValue record = new PmsBaseAttrValue();
         record.setAttrId(attrId);
         return attrValueMapper.select(record);
     }
 
+    @Override
+    public List<PmsBaseSaleAttr> getSaleAttrList() {
+        return saleAttrMapper.selectAll();
+    }
+
+    @Override
     public int saveAttrInfo(PmsBaseAttrInfo attrInfo) {
         List<PmsBaseAttrValue> attrValueList = attrInfo.getAttrValueList();
         int saved;

@@ -1,7 +1,6 @@
 package com.atguigu.gmall.manage.service.impl;
 
 import com.atguigu.gmall.api.bean.*;
-import com.atguigu.gmall.api.service.PmsProductService;
 import com.atguigu.gmall.api.service.PmsSkuService;
 import com.atguigu.gmall.manage.mapper.*;
 import org.apache.dubbo.config.annotation.Service;
@@ -23,6 +22,18 @@ public class PmsSkuServiceImpl implements PmsSkuService {
 
     @Autowired
     PmsSkuSaleAttrValueMapper skuSaleAttrValueMapper;
+
+    @Override
+    public PmsSkuInfo getSkuById(String skuId) {
+        // 获取sku信息
+        PmsSkuInfo skuInfo = skuInfoMapper.selectByPrimaryKey(skuId);
+
+        // 获取sku图片
+        PmsSkuImage record = new PmsSkuImage();
+        record.setSkuId(skuId);
+        skuInfo.setSkuImageList(skuImageMapper.select(record));
+        return skuInfo;
+    }
 
     @Override
     public int saveSkuInfo(PmsSkuInfo skuInfo) {
@@ -50,6 +61,7 @@ public class PmsSkuServiceImpl implements PmsSkuService {
         List<PmsSkuSaleAttrValue> saleAttrValueList = skuInfo.getSkuSaleAttrValueList();
         for (PmsSkuSaleAttrValue saleAttrValue: saleAttrValueList){
             saleAttrValue.setId(null);
+            saleAttrValue.setSpuId(skuInfo.getSpuId());
             saleAttrValue.setSkuId(skuInfo.getId());
         }
         skuSaleAttrValueMapper.batchInsert(saleAttrValueList);

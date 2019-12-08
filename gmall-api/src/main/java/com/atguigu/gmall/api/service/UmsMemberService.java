@@ -6,5 +6,5 @@ import java.util.List;
 public interface UmsMemberService {
     List<UmsMember> getAllMember();
 
-    int addMember(UmsMember member);
+    int saveMember(UmsMember member);
 }

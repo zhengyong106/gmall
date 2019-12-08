@@ -3,7 +3,7 @@ package com.atguigu.gmall.manage.controller;
 import com.atguigu.gmall.api.bean.PmsProductImage;
 import com.atguigu.gmall.api.bean.PmsProductInfo;
 import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
-import com.atguigu.gmall.api.service.PmsProductService;
+import com.atguigu.gmall.api.service.PmsSpuService;
 import com.atguigu.gmall.web.util.FDFSFileUploadUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
@@ -15,21 +15,21 @@ import java.util.List;
 @RestController
 public class SpuController {
     @Reference
-    PmsProductService productService;
+    PmsSpuService spuService;
 
     @RequestMapping("spuList")
     public List<PmsProductInfo> spuList(String catalog3Id){
-        return productService.getSpuList(catalog3Id);
+        return spuService.getSpuList(catalog3Id);
     }
 
     @RequestMapping("spuSaleAttrList")
     public List<PmsProductSaleAttr> spuSaleAttrList(String spuId){
-        return productService.getSpuSaleAttrList(spuId);
+        return spuService.getSpuSaleAttrListBySpuId(spuId);
     }
 
     @RequestMapping("spuImageList")
     public List<PmsProductImage> spuImageList(String spuId){
-        return productService.getSpuImageList(spuId);
+        return spuService.getSpuImageList(spuId);
     }
 
     @RequestMapping("fileUpload")
@@ -39,6 +39,6 @@ public class SpuController {
 
     @RequestMapping("saveSpuInfo")
     public String saveSpuInfo(@RequestBody PmsProductInfo pmsProductInfo){
-        return productService.saveSpuInfo(pmsProductInfo) > 0 ? "SUCCESS": "FIELD";
+        return spuService.saveSpuInfo(pmsProductInfo) > 0 ? "SUCCESS": "FIELD";
     }
 }
