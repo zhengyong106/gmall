@@ -3,6 +3,7 @@ package com.atguigu.gmall.api.service;
 import com.atguigu.gmall.api.bean.PmsProductImage;
 import com.atguigu.gmall.api.bean.PmsProductInfo;
 import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
+import com.atguigu.gmall.api.bean.PmsSkuSaleAttrValue;
 
 import java.util.List;
 

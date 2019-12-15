@@ -13,16 +13,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class FDFSFileUploadUtil {
-    private static final Logger logger = LoggerFactory.getLogger(FDFSFileUploadUtil.class);
+public class FileUploadUtil {
+    private static final Logger logger = LoggerFactory.getLogger(FileUploadUtil.class);
 
-    private static final String HTTP_SERVICE_URL = "http://192.168.10.10/";
+    private static final String HTTP_SERVICE_URL = "http://image.gmall.com";
 
     static {
         try {
             ClientGlobal.init(new ClassPathResource("fdfs_client.conf").getFile().getAbsolutePath());
         } catch (Exception e) {
-            logger.error("FastDFS Client Init Fail!",e);
+            logger.error("FastDFS Client Init Fail!", e);
         }
     }
 

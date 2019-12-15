@@ -221,42 +221,18 @@
 							</ul>
 						</div>
 
-						<div class="box-attr-3">
-						<br/>
+						<div class="box-attr-3" id="valuesSku" th:value="${skuSaleAttrValueHash}">
 							<div class="box-attr-2 clear"  th:each="spuSaleAttr:${spuSaleAttrListChecked}">
 								<dl>
 									<dt th:text="${spuSaleAttr.saleAttrName}">选择颜色</dt>
-									<dd th:class="${saleAttrValue.checked} == '1' ? 'redborder' : ''" th:each="saleAttrValue:${spuSaleAttr.spuSaleAttrValueList}">
+									<dd th:class="${saleAttrValue.checked} == '1' ? 'redborder' : ''"
+										th:each="saleAttrValue:${spuSaleAttr.spuSaleAttrValueList}">
 										<div th:value="${saleAttrValue.id}" th:text="${saleAttrValue.saleAttrValueName}">
 											  摩卡金
 										</div>
 									</dd>
 								</dl>
 							</div>
-<!--							<div class="box-attr-2 clear">
-								<dl>
-									<dt>选择版本</dt>
-									<dd>
-										<a href="#">标准版</a>
-									</dd>
-									<dd>
-										<a href="#">套装版</a>
-									</dd>
-								</dl>
-							</div>
-
-							<div class="box-attr-2 clear">
-								<dl>
-									<dt>选择内存</dt>
-									<dd>
-										<a href="#">64GB</a>
-									</dd>
-									<dd>
-										<a href="#">128GB</a>
-									</dd>
-								</dl>
-							</div>-->
-							<br/>
 						</div>
 
 						<div class="box-btns clear">
@@ -1023,6 +999,7 @@
             // 被选中属性
             var checkDivs = $(".redborder div");
             var valueIds="";
+
             // 拼接成属性值串
             for (var i = 0; i < checkDivs.length; i++) {
                 var saleAttrValueDiv = checkDivs.eq(i);
@@ -1031,6 +1008,7 @@
                 }
                 valueIds=valueIds+saleAttrValueDiv.attr("value");
             }
+
             //页面上的hashjson
             var valuesSku = $("#valuesSku").attr("value");
             var valuesSkuJson=JSON.parse(valuesSku);

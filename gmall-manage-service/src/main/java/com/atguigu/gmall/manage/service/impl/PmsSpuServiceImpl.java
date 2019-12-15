@@ -47,7 +47,7 @@ public class PmsSpuServiceImpl implements PmsSpuService {
         record2.setProductId(spuId);
         List<PmsProductSaleAttrValue> saleAttrValueList = productSaleAttrValueMapper.select(record2);
 
-        // 生成字典映射销售属性和销售属性值
+        // 生成hash映射销售属性和销售属性值
         Map<String, List<PmsProductSaleAttrValue>> relationMap = new HashMap<>();
         for(PmsProductSaleAttrValue saleAttrValue: saleAttrValueList){
             String saleAttrId = saleAttrValue.getSaleAttrId();
@@ -58,7 +58,7 @@ public class PmsSpuServiceImpl implements PmsSpuService {
             }
         }
 
-        // 通过字典关联查询
+        // 通过hash关联查询
         for(PmsProductSaleAttr saleAttr: saleAttrList){
             String saleAttrId = saleAttr.getSaleAttrId();
             saleAttr.setSpuSaleAttrValueList(relationMap.get(saleAttrId));

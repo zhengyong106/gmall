@@ -59,7 +59,7 @@ public class PmsBaseServiceImpl implements PmsBaseService {
         record2.setCatalog3Id(catalog3Id);
         List<PmsBaseAttrValue> attrValueList = (attrValueMapper.select(record2));
 
-        // 生成字典映射平台属性和平台属性值
+        // 生成hash映射平台属性和平台属性值
         Map<String, List<PmsBaseAttrValue>> relationMap = new HashMap<>();
         for(PmsBaseAttrValue attrValue: attrValueList){
             String attrInfoId = attrValue.getAttrId();
@@ -70,7 +70,7 @@ public class PmsBaseServiceImpl implements PmsBaseService {
             }
         }
 
-        // 通过字典关联查询
+        // 通过hash关联查询
         for(PmsBaseAttrInfo attrInfo: attrInfoList){
             String attrInfoId = attrInfo.getId();
             attrInfo.setAttrValueList(relationMap.get(attrInfoId));

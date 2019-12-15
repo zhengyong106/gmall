@@ -4,7 +4,7 @@ import com.atguigu.gmall.api.bean.PmsProductImage;
 import com.atguigu.gmall.api.bean.PmsProductInfo;
 import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
 import com.atguigu.gmall.api.service.PmsSpuService;
-import com.atguigu.gmall.web.util.FDFSFileUploadUtil;
+import com.atguigu.gmall.web.util.FileUploadUtil;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +34,7 @@ public class SpuController {
 
     @RequestMapping("fileUpload")
     public String fileUpload(@RequestParam MultipartFile file){
-        return FDFSFileUploadUtil.upload(file);
+        return FileUploadUtil.upload(file);
     }
 
     @RequestMapping("saveSpuInfo")
