@@ -7,15 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 public interface PmsSkuService {
-    PmsSkuInfo getSkuInfoById(String skuId);
+    PmsSkuInfo getSkuInfo(String skuId);
 
-    PmsSkuInfo getSkuInfoByIdFromCache(String skuId);
+    PmsSkuInfo getSkuInfoFromCache(String skuId);
 
-    PmsSkuInfo getSkuInfoByIdFromDB(String skuId);
+    PmsSkuInfo getSkuInfoFromDB(String skuId);
 
     Map<String, String> getSkuSaleAttrValueHashBySpuId(String spuId);
 
-    int saveSkuInfo(PmsSkuInfo skuInfo);
+    Map<String, String> getSkuSaleAttrValueHashBySpuIdFromCache(String spuId);
 
-    void test(int i);
+    Map<String, String> getSkuSaleAttrValueHashBySpuIdFromDB(String spuId);
+
+    int saveSkuInfo(PmsSkuInfo skuInfo);
 }

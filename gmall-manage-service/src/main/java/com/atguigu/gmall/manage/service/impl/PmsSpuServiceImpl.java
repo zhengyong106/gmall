@@ -1,15 +1,19 @@
 package com.atguigu.gmall.manage.service.impl;
 
-import com.atguigu.gmall.api.bean.PmsProductImage;
-import com.atguigu.gmall.api.bean.PmsProductInfo;
-import com.atguigu.gmall.api.bean.PmsProductSaleAttr;
-import com.atguigu.gmall.api.bean.PmsProductSaleAttrValue;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import com.atguigu.gmall.api.bean.*;
 import com.atguigu.gmall.api.service.PmsSpuService;
 import com.atguigu.gmall.manage.mapper.PmsProductImageMapper;
 import com.atguigu.gmall.manage.mapper.PmsProductInfoMapper;
 import com.atguigu.gmall.manage.mapper.PmsProductSaleAttrMapper;
 import com.atguigu.gmall.manage.mapper.PmsProductSaleAttrValueMapper;
+import com.atguigu.gmall.service.util.RedisUtil;
 import org.apache.dubbo.config.annotation.Service;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
@@ -27,6 +31,16 @@ public class PmsSpuServiceImpl implements PmsSpuService {
 
     @Autowired
     PmsProductSaleAttrValueMapper productSaleAttrValueMapper;
+
+    @Autowired
+    RedisUtil redisUtil;
+
+    @Autowired
+    RedissonClient redissonClient;
+
+    private final Logger LOGGER = LoggerFactory.getLogger(PmsSkuServiceImpl.class);
+    private final int REDIS_KEY_EXPIRE = 30 * 60;
+    private final int REDIS_NULL_KEY_EXPIRE = 10;
 
     @Override
     public List<PmsProductInfo> getSpuList(String catalog3Id) {
@@ -68,6 +82,71 @@ public class PmsSpuServiceImpl implements PmsSpuService {
 
     @Override
     public List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuId(String spuId, String skuId) {
+        String redisKey = "spu:" + spuId + "-" + skuId + ":saleAttrListChecked";
+        String lockName = "spu:" + spuId + "-" + skuId + ":saleAttrListChecked:lock";
+
+        // 先尝试查找缓存
+        List<PmsProductSaleAttr> saleAttrList = getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromCache(redisKey);
+
+        if (null != saleAttrList) {
+            return saleAttrList;
+        } else {
+            // 添加分布式锁，防止缓存击穿
+            RLock lock = null;
+            try {
+                lock = redissonClient.getLock(lockName);
+                lock.lock();
+            } catch (Exception e) {
+                LOGGER.error("分布式锁获取失败！", e);
+            }
+
+            // 再次查找缓存，防止锁争抢导致数据库的重复查询
+            saleAttrList = getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromCache(redisKey);
+            if (null != saleAttrList) {
+                if (null != lock) lock.unlock(); // 释放锁
+                return saleAttrList;
+            }
+
+            // 如果查询不到结果，则通过数据库查询
+            try {
+                saleAttrList = getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromDB(spuId, skuId);
+            } catch (Exception e){
+                if (null != lock) lock.unlock(); // 释放锁
+                throw e;
+            }
+
+            // 将查询结果添加到缓存
+            try {
+                // 需要缓存查询为空的数据，防止缓存穿透
+                if (null == saleAttrList) {
+                    redisUtil.set(redisKey, "", REDIS_NULL_KEY_EXPIRE);
+                } else {
+                    redisUtil.set(redisKey, JSON.toJSONString(saleAttrList), REDIS_KEY_EXPIRE);
+                }
+            } catch (Exception e) {
+                LOGGER.error("添加缓存结果失败！", e);
+            } finally {
+                if (null != lock) lock.unlock(); // 释放锁
+            }
+            return saleAttrList;
+        }
+    }
+
+    @Override
+    public List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromCache(String redisKey) {
+        try {
+            String value = redisUtil.get(redisKey);
+            if (null != value) {
+                return JSON.parseObject(value, new TypeReference<List<PmsProductSaleAttr>>(){});
+            }
+        } catch (Exception e) {
+            LOGGER.error("查询缓存结果失败！", e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromDB(String spuId, String skuId) {
         return productSaleAttrMapper.selectCheckedBySpuIdAndSkuId(spuId, skuId);
     }
 

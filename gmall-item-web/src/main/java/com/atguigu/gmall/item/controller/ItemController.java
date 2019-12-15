@@ -28,21 +28,15 @@ public class ItemController {
     @GetMapping("{skuId}.html")
     public String index(@PathVariable String skuId, ModelMap modelMap) {
         // sku信息
-        PmsSkuInfo skuInfo = skuService.getSkuInfoById(skuId);
-//        // spu销售属性信息
-//        List<PmsProductSaleAttr> spuSaleAttrListChecked = spuService.getSpuSaleAttrListCheckedBySpuIdAndSkuId(skuInfo.getSpuId(), skuId);
-//
-//        // sku销售属性值列表
-//        Map<String, String> saleAttrValueHash = skuService.getSkuSaleAttrValueHashBySpuId(skuInfo.getSpuId());
+        PmsSkuInfo skuInfo = skuService.getSkuInfo(skuId);
+        // spu销售属性信息
+        List<PmsProductSaleAttr> spuSaleAttrListChecked = spuService.getSpuSaleAttrListCheckedBySpuIdAndSkuId(skuInfo.getSpuId(), skuId);
+        // sku销售属性值列表
+        Map<String, String> saleAttrValueHash = skuService.getSkuSaleAttrValueHashBySpuId(skuInfo.getSpuId());
 
         modelMap.put("skuInfo", skuInfo);
-//        modelMap.put("spuSaleAttrListChecked", spuSaleAttrListChecked);
-//        modelMap.put("skuSaleAttrValueHash", JSON.toJSONString(saleAttrValueHash));
+        modelMap.put("spuSaleAttrListChecked", spuSaleAttrListChecked);
+        modelMap.put("skuSaleAttrValueHash", JSON.toJSONString(saleAttrValueHash));
         return "item";
-    }
-
-    @GetMapping("test")
-    public void test() {
-        skuService.test(3);
     }
 }

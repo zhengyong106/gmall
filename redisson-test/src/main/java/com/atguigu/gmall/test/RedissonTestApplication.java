@@ -1,4 +1,4 @@
-package com.atguigu.gmall.redisson.test;
+package com.atguigu.gmall.test;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

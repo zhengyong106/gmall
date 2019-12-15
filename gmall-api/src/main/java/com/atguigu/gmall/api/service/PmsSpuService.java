@@ -14,6 +14,10 @@ public interface PmsSpuService {
 
     List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuId(String spuId, String skuId);
 
+    List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromCache(String redisKey);
+
+    List<PmsProductSaleAttr> getSpuSaleAttrListCheckedBySpuIdAndSkuIdFromDB(String spuId, String skuId);
+
     List<PmsProductImage> getSpuImageList(String spuId);
 
     int saveSpuInfo(PmsProductInfo pmsProductInfo);
