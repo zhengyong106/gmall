@@ -27,6 +27,8 @@
         <module>../gmall-user-web</module>
         <module>../gmall-web-util</module>
         <module>../redisson-test</module>
+        <module>../gmall-search-web</module>
+        <module>../gmall-search-service</module>
     </modules>
 
     <properties>
