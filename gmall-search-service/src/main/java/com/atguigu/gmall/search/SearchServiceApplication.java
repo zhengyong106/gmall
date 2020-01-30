@@ -1,12 +1,13 @@
 package com.atguigu.gmall.search;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import tk.mybatis.spring.annotation.MapperScan;
 
-@Controller
+@SpringBootApplication
+@MapperScan("com.atguigu.gmall.search.mapper")
 public class SearchServiceApplication {
-    @GetMapping
-    public String list() {
-        return "list";
+    public static void main(String[] args) {
+        SpringApplication.run(SearchServiceApplication.class);
     }
 }

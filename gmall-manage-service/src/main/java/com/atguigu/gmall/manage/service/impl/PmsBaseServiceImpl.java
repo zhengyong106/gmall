@@ -79,6 +79,11 @@ public class PmsBaseServiceImpl implements PmsBaseService {
     }
 
     @Override
+    public List<PmsBaseAttrInfo> getAttrInfoListByAttrValueIds(Set<String> attrValueIds) {
+        return attrInfoMapper.selectByAttrValueIds(attrValueIds);
+    }
+
+    @Override
     public List<PmsBaseAttrValue> getAttrValueList(String attrId) {
         PmsBaseAttrValue record = new PmsBaseAttrValue();
         record.setAttrId(attrId);

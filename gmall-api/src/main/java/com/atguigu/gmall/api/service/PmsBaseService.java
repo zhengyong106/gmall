@@ -3,6 +3,7 @@ package com.atguigu.gmall.api.service;
 import com.atguigu.gmall.api.bean.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PmsBaseService {
     List<PmsBaseCatalog1> getCatalog1();
@@ -12,6 +13,8 @@ public interface PmsBaseService {
     List<PmsBaseCatalog3> getCatalog3(String catalog2Id);
 
     List<PmsBaseAttrInfo> getAttrInfoList(String catalog3Id);
+
+    List<PmsBaseAttrInfo> getAttrInfoListByAttrValueIds(Set<String> attrValueIds);
 
     List<PmsBaseAttrValue> getAttrValueList(String attrId);
 

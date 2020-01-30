@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.gmall.search.mapper.PmsSkuSearchMapper">
+
+    <resultMap id="skuSearchMapper" type="com.atguigu.gmall.api.bean.PmsSkuSearch" autoMapping="true">
+        <id column="id" property="id"/>
+        <collection property="attrValueList" ofType="com.atguigu.gmall.api.bean.PmsSkuAttrValue" autoMapping="true">
+            <id column="attr_value_id" property="id"/>
+            <result column="id" property="skuId"/>
+        </collection>
+    </resultMap>
+
+</mapper>
